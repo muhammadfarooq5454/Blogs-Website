@@ -1,0 +1,48 @@
+﻿@*Here I write this because the model have more rows so convert them into list and then displaying it.*@
+
+@model List<Bloggie.Web.Models.Domain.Tag>
+
+@{
+}
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>All Tags - Admin Functionality</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    @*Using Model keyword to access Bloggie.Web.Models.Domain.Tag We have sql query functions upon it ✔*@
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> Id </th>
+                    <th> Name </th>
+                    <th> Display Name </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>              
+                    @foreach (var tag in Model)
+                    {
+                        <tr>
+                            <td> @tag.Id </td>
+                            <td> @tag.Name </td>
+                            <td> @tag.DisplayName </td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @*Here we have asp-route-id we name it as asp-route-id because id is to be passed in routing to Edit*@
+                                <td><a asp-area="" asp-controller="AdminTags" asp-action="Edit" asp-route-id="@tag.Id">Edit</a></td>                        
+                            }
+                        </tr>
+                    }    
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Tags found!</p>
+    }
+</div>

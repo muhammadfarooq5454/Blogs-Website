@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+@using Microsoft.AspNetCore.Authorization;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bloggie.Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Bloggie.Web.styles.css" asp-append-version="true" />
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mt-3 mb-3">
+            <div class="container">
+                <div class="fw-bold">
+                    <a class="navbar-brand" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                        asp-area=""
+                        asp-controller="Home"
+                        asp-action="Index">
+                        Bloggie.Web
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                            @if(signInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                       asp-area=""
+                                       asp-controller="AdminTags"
+                                       asp-action="Add">
+                                        Add Tag
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                       asp-area=""
+                                       asp-controller="AdminTags"
+                                       asp-action="List">
+                                        Display Tags
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                       asp-area=""
+                                       asp-controller="AdminBlogPosts"
+                                       asp-action="Add">
+                                        Add BlogPost
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                       asp-area=""
+                                       asp-controller="AdminBlogPosts"
+                                       asp-action="List">
+                                        Display BlogPosts
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="nav-link" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                            asp-area=""
+                                            asp-controller="AdminUsers"
+                                            asp-action="List">Display All Users
+                                        </a>
+                                    }
+                                </li>
+                            }
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <!-- Jo bhi user currently logged in hai woh batadega ye method -->
+                        <!-- Claim leta hai ye User ke jo user chalrha hai woh User object mai ajayega na ya nhi-->
+                        @if(signInManager.IsSignedIn(User))
+                        {
+                            <div class="me-3 text-light">
+                                <!-- Ye question mark not null ke hain user agr null na ho tu uski
+                                identity jo null na ho tu usse name nikala hai -->
+                                @User?.Identity?.Name
+                            </div>
+
+                            <a class="btn bg-light" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                                asp-area="" asp-controller="Account" asp-action="Logout">LogOut</a>
+                        }
+                        else
+                        {
+                            <a class="me-3 btn bg-light" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                            asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+
+                            <a class="btn bg-light" onMouseOver="this.style.color='#000'" onMouseOut="this.style.color='gray'"
+                            asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - Bloggie.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
