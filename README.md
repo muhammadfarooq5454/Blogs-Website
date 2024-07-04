@@ -1,1 +1,1 @@
-# Bloggie
+# Bloggie Website Containing Blogs and Tags
